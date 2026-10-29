@@ -54,13 +54,16 @@ then back it in the diagrams and the `staff.role` enum.
 
 ## Build order
 
-1. Database schema and menu management *(this change)*
-2. Order placement and table status
-3. Kitchen display sync and notifications
-4. Billing, split/merge, payments
-5. Authentication, role-based access, logging and reports
+1. Database schema and menu management — done
+2. Order placement and table status — done
+3. Kitchen display sync and notifications — done (WebSocket)
+4. Billing, split/merge, payments — done
+5. Authentication, role-based access, logging and reports — done
 
-Then: unit tests (bill calculation, order state transitions), integration
-tests (waiter app ↔ kitchen display sync), edge cases (two waiters editing
-the same table, cancellation mid-preparation, network drop), pilot rollout,
-staff training, maintenance.
+All 14 functional requirements are implemented end-to-end (server API +
+React UI for all three roles) — see the root `README.md` for how to run it
+and `docs/architecture.md` for the implementation decisions behind the
+diagrams above (notably how billing evolved past a strict 1:1 Order↔Bill).
+
+Remaining from the original plan: a pilot rollout, staff training, and
+ongoing maintenance, which are operational rather than engineering tasks.

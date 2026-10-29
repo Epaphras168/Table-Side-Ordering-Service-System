@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.header p {
+  margin: 0;
+}
+
+.formCard {
+  margin-bottom: var(--space-5);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.statCard {
+  padding: var(--space-4);
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.statValue {
+  font-size: 1.6rem;
+  font-weight: 750;
+  margin-top: 4px;
+}
+
+.chartCard {
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}

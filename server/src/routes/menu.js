@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Router } from 'express';
+import { requireRole } from '../middleware/auth.js';
 
 function serialize(row) {
   return { ...row, available: !!row.available };
@@ -23,7 +24,7 @@ export function menuRouter(db) {
     res.json(serialize(row));
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', requireRole('manager'), (req, res) => {
     const { name, category, price, available = true } = req.body ?? {};
     if (!name || !category || typeof price !== 'number' || price < 0) {
       return res.status(400).json({ error: 'name, category and a non-negative price are required' });
@@ -36,7 +37,7 @@ export function menuRouter(db) {
     res.status(201).json(serialize(row));
   });
 
-  router.put('/:id', (req, res) => {
+  router.put('/:id', requireRole('manager'), (req, res) => {
     const existing = db.prepare('SELECT * FROM menu_items WHERE item_id = ?').get(req.params.id);
     if (!existing) return res.status(404).json({ error: 'Menu item not found' });
 
@@ -63,7 +64,7 @@ export function menuRouter(db) {
   // Removing a menu item that is already referenced by an order would
   // corrupt order history, so it is disabled (available = 0) instead of
   // deleted. An item never ordered is deleted outright.
-  router.delete('/:id', (req, res) => {
+  router.delete('/:id', requireRole('manager'), (req, res) => {
     const existing = db.prepare('SELECT * FROM menu_items WHERE item_id = ?').get(req.params.id);
     if (!existing) return res.status(404).json({ error: 'Menu item not found' });
 

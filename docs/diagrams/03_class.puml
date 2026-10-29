@@ -65,9 +65,15 @@ class Bill {
   - tax: double
   - serviceCharge: double
   - total: double
+  - status: String
   + generate()
   + split(parts)
-  + merge(bills)
+}
+class BillShare {
+  - shareId: String
+  - label: String
+  - amount: double
+  - paid: boolean
 }
 class Payment {
   - paymentId: String
@@ -92,7 +98,9 @@ Waiter "1" -- "0..*" Order : places >
 Table "1" -- "0..*" Order : has >
 Order "1" *-- "1..*" OrderItem : contains
 OrderItem "0..*" -- "1" MenuItem : refers to
-Order "1" -- "0..1" Bill : generates >
+Table "1..*" -- "0..*" Bill : billed via >
+Order "0..*" -- "0..1" Bill : included in >
+Bill "1" *-- "0..*" BillShare : split into
 Bill "1" -- "1..*" Payment : settled by >
 Order "1" -- "0..*" Notification : triggers >
 KitchenStaff "1" -- "0..*" OrderItem : updates >
@@ -104,5 +112,14 @@ note right of Order::cancel
   Preparing (see state diagram).
   Requires waiter/manager
   confirmation (FR14).
+end note
+
+note right of Bill
+  A bill covers every served order at
+  one table, or several at once when
+  tables are merged (FR8). Splitting
+  creates BillShares instead of
+  separate Bills, so each share can
+  be paid independently.
 end note
 @enduml

@@ -1,0 +1,87 @@
+:root {
+  /* Surfaces */
+  --color-bg: #f7f5f1;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1ede6;
+  --color-border: #e3dcd0;
+  --color-border-strong: #cfc5b4;
+
+  /* Text */
+  --color-text: #221c15;
+  --color-text-muted: #6b6258;
+  --color-text-faint: #9a9086;
+
+  /* Brand */
+  --color-primary: #c2410c;
+  --color-primary-hover: #9a3412;
+  --color-primary-soft: #fde6d9;
+  --color-primary-contrast: #ffffff;
+
+  /* Semantic */
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fee2e2;
+  --color-info: #1d4ed8;
+  --color-info-bg: #dbeafe;
+  --color-neutral: #57534e;
+  --color-neutral-bg: #e7e2da;
+
+  /* Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(34, 28, 21, 0.06);
+  --shadow-md: 0 4px 12px rgba(34, 28, 21, 0.08);
+  --shadow-lg: 0 12px 32px rgba(34, 28, 21, 0.14);
+
+  --font-sans: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
+
+  color-scheme: light;
+}
+
+/* The Kitchen Display opts into a dark theme for a hot, bright-light
+   kitchen environment; scoped via [data-theme="dark"] on its root. */
+:root[data-theme='dark'] {
+  --color-bg: #161310;
+  --color-surface: #221d17;
+  --color-surface-alt: #2b2419;
+  --color-border: #3b3225;
+  --color-border-strong: #4d4232;
+
+  --color-text: #f6f1ea;
+  --color-text-muted: #c3b8a9;
+  --color-text-faint: #8d8274;
+
+  --color-primary: #fb923c;
+  --color-primary-hover: #fdba74;
+  --color-primary-soft: #46290f;
+  --color-primary-contrast: #221306;
+
+  --color-success: #4ade80;
+  --color-success-bg: #14532d;
+  --color-warning: #fbbf24;
+  --color-warning-bg: #452c05;
+  --color-danger: #f87171;
+  --color-danger-bg: #4b1414;
+  --color-info: #60a5fa;
+  --color-info-bg: #0f2a52;
+  --color-neutral: #a8a29e;
+  --color-neutral-bg: #332e28;
+
+  color-scheme: dark;
+}
