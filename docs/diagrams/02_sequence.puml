@@ -1,0 +1,52 @@
+@startuml Sequence_TOSS
+actor Waiter
+participant "Waiter App" as App
+participant "TOSS Server" as Server
+database "Database" as DB
+participant "Kitchen Display" as KDS
+actor "Kitchen Staff" as Kitchen
+
+Waiter -> App : Select table
+App -> Server : getTableStatus(tableId)
+Server -> DB : query table
+DB --> Server : table status
+Server --> App : status (occupied/empty)
+App --> Waiter : show table screen
+
+Waiter -> App : Browse menu & add items
+Waiter -> App : Confirm order
+App -> Server : submitOrder(tableId, items)
+Server -> DB : save order (status = pending)
+DB --> Server : order saved (orderId)
+Server -> KDS : pushOrder(orderId, items)
+KDS --> Kitchen : display new order ticket
+Server --> App : order confirmed
+
+Kitchen -> KDS : mark item "preparing"
+KDS -> Server : updateStatus(orderId, "preparing")
+Server -> DB : update order status
+
+Kitchen -> KDS : mark item "ready"
+KDS -> Server : updateStatus(orderId, "ready")
+Server -> DB : update order status
+Server -> App : notifyReady(orderId)
+App --> Waiter : "Order ready" alert
+
+Waiter -> App : Serve order / mark served
+App -> Server : updateStatus(orderId, "served")
+Server -> DB : update order status
+
+Waiter -> App : Request bill
+App -> Server : generateBill(tableId)
+Server -> DB : fetch order items + prices
+DB --> Server : itemized data
+Server --> App : bill (subtotal, tax, service)
+App --> Waiter : display bill
+
+Waiter -> App : Process payment (cash/card/mobile money)
+App -> Server : recordPayment(tableId, method, amount)
+Server -> DB : save payment, close table
+DB --> Server : confirmation
+Server --> App : payment successful
+App --> Waiter : receipt / table freed
+@enduml

@@ -1,0 +1,21 @@
+@startuml Sequence_TOSS_UrgentAlert
+actor Waiter
+participant "Waiter App" as App
+participant "TOSS Server" as Server
+database "Database" as DB
+participant "Kitchen Display" as KDS
+actor "Kitchen Staff" as Kitchen
+actor Manager
+participant "Manager Console" as MgrApp
+
+Waiter -> App : Send urgent alert\n(guest needs assistance / order delayed)
+App -> Server : sendAlert(tableId, message)
+Server -> DB : save notification (type = urgent)
+DB --> Server : notification saved
+Server -> KDS : pushAlert(tableId, message)
+KDS --> Kitchen : show urgent banner
+Server -> MgrApp : pushAlert(tableId, message)
+MgrApp --> Manager : show urgent banner
+Server --> App : alert sent
+App --> Waiter : confirmation
+@enduml

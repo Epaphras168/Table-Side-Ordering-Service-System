@@ -1,0 +1,28 @@
+@startuml Sequence_TOSS_CancelOrder
+actor Waiter
+participant "Waiter App" as App
+participant "TOSS Server" as Server
+database "Database" as DB
+participant "Kitchen Display" as KDS
+actor "Kitchen Staff" as Kitchen
+
+Waiter -> App : Request order cancellation
+App --> Waiter : Ask for confirmation
+Waiter -> App : Confirm cancellation
+
+App -> Server : cancelOrder(orderId)
+Server -> DB : fetch order status
+
+alt order status is Pending or Preparing
+  Server -> DB : update order status = Cancelled
+  DB --> Server : confirmation
+  Server -> KDS : pushCancellation(orderId)
+  KDS --> Kitchen : remove/flag ticket as cancelled
+  Server -> DB : save notification (type = cancellation)
+  Server --> App : cancellation confirmed
+  App --> Waiter : "Order cancelled"
+else order status is Ready, Served or later
+  Server --> App : cancellation rejected (too late)
+  App --> Waiter : show error, order cannot be cancelled
+end
+@enduml

@@ -1,0 +1,22 @@
+@startuml State_TOSS
+[*] --> Pending : Order submitted by waiter
+
+Pending --> Preparing : Kitchen accepts order
+Preparing --> Ready : Kitchen marks item(s) ready
+Ready --> Served : Waiter delivers order to table
+Served --> BillRequested : Customer requests bill
+BillRequested --> Paid : Payment processed
+Paid --> Closed : Table freed
+
+Pending --> Cancelled : Order cancelled before preparation
+Preparing --> Cancelled : Order cancelled during preparation
+
+note on link
+  FR14: cancellation requires explicit
+  confirmation from the waiter or manager.
+  Not available once Ready or later.
+end note
+
+Cancelled --> [*]
+Closed --> [*]
+@enduml

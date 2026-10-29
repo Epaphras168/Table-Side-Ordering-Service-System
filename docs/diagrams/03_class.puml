@@ -1,0 +1,108 @@
+@startuml Class_TOSS
+class Staff {
+  - staffId: String
+  - name: String
+  - role: String
+  - username: String
+  - passwordHash: String
+  + login()
+  + logout()
+}
+class Waiter {
+  + selectTable(tableId)
+  + placeOrder(order)
+  + modifyOrder(orderId)
+  + cancelOrder(orderId)
+  + requestBill(tableId)
+  + sendAlert(message)
+}
+class KitchenStaff {
+  + updateOrderStatus(orderId, status)
+}
+class Manager {
+  + addMenuItem(item)
+  + editMenuItem(itemId)
+  + removeMenuItem(itemId)
+  + cancelOrder(orderId)
+  + viewReports()
+}
+class Table {
+  - tableId: String
+  - number: int
+  - capacity: int
+  - status: String
+  + getStatus()
+  + setStatus(status)
+}
+class MenuItem {
+  - itemId: String
+  - name: String
+  - category: String
+  - price: double
+  - available: boolean
+  + updatePrice(price)
+}
+class Order {
+  - orderId: String
+  - tableId: String
+  - status: String
+  - createdAt: DateTime
+  + addItem(item, qty)
+  + removeItem(itemId)
+  + changeStatus(status)
+  + cancel()
+  + calculateTotal()
+}
+class OrderItem {
+  - orderItemId: String
+  - quantity: int
+  - status: String
+  - notes: String
+}
+class Bill {
+  - billId: String
+  - subtotal: double
+  - tax: double
+  - serviceCharge: double
+  - total: double
+  + generate()
+  + split(parts)
+  + merge(bills)
+}
+class Payment {
+  - paymentId: String
+  - method: String
+  - amount: double
+  - timestamp: DateTime
+  + process()
+}
+class Notification {
+  - notificationId: String
+  - type: String
+  - message: String
+  - timestamp: DateTime
+  + send()
+}
+
+Staff <|-- Waiter
+Staff <|-- KitchenStaff
+Staff <|-- Manager
+
+Waiter "1" -- "0..*" Order : places >
+Table "1" -- "0..*" Order : has >
+Order "1" *-- "1..*" OrderItem : contains
+OrderItem "0..*" -- "1" MenuItem : refers to
+Order "1" -- "0..1" Bill : generates >
+Bill "1" -- "1..*" Payment : settled by >
+Order "1" -- "0..*" Notification : triggers >
+KitchenStaff "1" -- "0..*" OrderItem : updates >
+Manager "1" -- "0..*" MenuItem : manages >
+Manager "1" -- "0..*" Order : can cancel >
+
+note right of Order::cancel
+  Only valid from Pending or
+  Preparing (see state diagram).
+  Requires waiter/manager
+  confirmation (FR14).
+end note
+@enduml

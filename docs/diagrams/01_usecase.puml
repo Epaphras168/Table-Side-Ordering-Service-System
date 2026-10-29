@@ -1,0 +1,65 @@
+@startuml UseCase_TOSS
+skinparam backgroundColor white
+skinparam actorStyle awesome
+left to right direction
+
+actor Waiter
+actor "Kitchen Staff" as Kitchen
+actor Manager
+
+rectangle "Table-Side Ordering & Service System (TOSS)" {
+  usecase "Select Table" as UC1
+  usecase "View Table Status" as UC2
+  usecase "Browse Menu" as UC3
+  usecase "Place Order" as UC4
+  usecase "Modify Order" as UC5
+  usecase "Receive Order Notification" as UC6
+  usecase "Update Order Status" as UC7
+  usecase "Send Ready Notification" as UC8
+  usecase "Send Urgent Alert" as UC9
+  usecase "Generate Bill" as UC10
+  usecase "Split / Merge Bill" as UC11
+  usecase "Process Payment" as UC12
+  usecase "Manage Menu Items" as UC13
+  usecase "Manage Staff Accounts" as UC14
+  usecase "View Sales Reports" as UC15
+  usecase "Authenticate" as UC16
+  usecase "Cancel Order" as UC17
+}
+
+Waiter --> UC1
+Waiter --> UC2
+Waiter --> UC3
+Waiter --> UC4
+Waiter --> UC5
+Waiter --> UC9
+Waiter --> UC11
+Waiter --> UC12
+Waiter --> UC16
+Waiter --> UC17
+
+UC4 ..> UC6 : <<include>>
+Kitchen --> UC6
+Kitchen --> UC7
+UC7 ..> UC8 : <<include>>
+Kitchen --> UC16
+
+UC11 ..> UC10 : <<include>>
+
+Manager --> UC13
+Manager --> UC14
+Manager --> UC15
+Manager --> UC16
+Manager --> UC17
+Manager --> UC12
+Manager --> UC10
+
+UC4 ..> UC2 : <<extend>>
+UC17 ..> UC9 : <<extend>>
+note right of UC17
+  Cancellation requires explicit
+  confirmation (FR14). Only orders
+  in Pending or Preparing state
+  may be cancelled.
+end note
+@enduml

@@ -1,0 +1,58 @@
+@startuml Activity_TOSS
+|Waiter|
+start
+:Select table;
+:Browse menu and add items to order;
+:Submit order;
+
+|TOSS System|
+:Record order in database (status = Pending);
+:Push order to kitchen display;
+
+fork
+  |Waiter|
+  :Notice delay or guest needs assistance;
+  :Send urgent alert;
+  |TOSS System|
+  :Push urgent alert to kitchen display
+  and manager console;
+fork again
+  |Kitchen Staff|
+  :Receive order ticket;
+
+  if (Cancellation requested by waiter/manager?) then (yes)
+    |Waiter|
+    :Confirm cancellation;
+    |TOSS System|
+    :Set order status = Cancelled;
+    :Notify kitchen display to remove ticket;
+    stop
+  else (no)
+    repeat :Prepare order items;
+    repeat while (Item ready?) is (not yet)
+    ->yes;
+    :Mark item as ready;
+
+    |TOSS System|
+    :Send "order ready" notification;
+  endif
+end fork
+
+|Waiter|
+:Serve order to table;
+:Mark order as served;
+:Request bill from system;
+
+|TOSS System|
+:Generate itemized bill
+(items + tax + service charge);
+
+|Waiter|
+:Present bill to customer;
+:Collect payment (cash / card / mobile money);
+
+|TOSS System|
+:Record payment;
+:Close / free the table;
+stop
+@enduml
